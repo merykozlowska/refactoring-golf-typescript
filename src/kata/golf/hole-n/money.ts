@@ -4,6 +4,7 @@ export class Money {
     public value: number;
     public currency: string;
 
+
     private constructor(value: number, currency: string) {
         this.value = value;
         this.currency = currency;
@@ -17,7 +18,7 @@ export class Money {
     }
 
     minus(other: Money): Money {
-        if (this.currency !== other.currency) {
+        if(this.currency !== other.currency) {
             throw new Incalculable();
         }
         return money(this.value - other.value, this.currency);

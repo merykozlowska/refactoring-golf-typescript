@@ -1,11 +1,11 @@
-import {Incalculable} from "./incalculable";
-import {money, Money} from "./money";
+import {Money} from "./money";
+import {TaxRate} from "./taxrate";
 
 export class Takehomecalculator {
-    private readonly percent: number;
+    private readonly taxRate: TaxRate;
 
-    constructor(percent: number) {
-        this.percent = percent;
+    constructor(taxRate: TaxRate) {
+        this.taxRate = taxRate;
     }
 
     netAmount(first: Money, ...rest : Money[] ): Money {
@@ -17,12 +17,7 @@ export class Takehomecalculator {
             total = total.plus(next);
         }
 
-        const amount:number = total.value * (this.percent / 100.0 );
-        const tax: Money = money(Math.trunc(amount), first.currency);
-
-        if (total.currency !== tax.currency) {
-            throw new Incalculable();
-        }
+        const tax: Money = this.taxRate.apply(total);
         return total.minus(tax);
     }
 
